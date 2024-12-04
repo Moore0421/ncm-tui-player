@@ -21,6 +21,7 @@ use std::sync::Arc;
 use std::{collections::HashMap, fs, io, path::PathBuf, time::Duration};
 use tokio::sync::Mutex;
 use urlqstring::QueryParams;
+use clap::{Command, Arg};
 
 lazy_static! {
     static ref _CSRF: Regex = Regex::new(r"_csrf=(?P<csrf>[^(;|$)]+)").unwrap();
@@ -495,13 +496,25 @@ impl NcmApi {
 
 /// 音乐信息获取 API
 impl NcmApi {
-    /// 获取“我喜欢的音乐”歌单
-    async fn get_user_favorite_songlist(&mut self) -> Result<()> {
+    pub async fn get_user_favorite_songlist(&mut self) -> Result<()> {
+        // 解析命令行参数
+        let matches = Command::new("xxx")
+            .arg(Arg::new("playList")
+                .long("playList")
+                .value_parser(clap::value_parser!(i32))  // 使用 value_parser 来解析 i32 类型
+                .required(true)
+                .help("The play list identifier"))
+            .get_matches();
+
+        // 获取传入的 playList 参数并转换为 u16
+        let play_list = *matches.get_one::<i32>("playList").unwrap() as u16;
+
         match &self.login_info {
             Some(login_info) => {
-                let user_id = login_info.uid.clone();
+                let user_id = login_info.uid.clone();  // 获取登录用户的 id
 
-                match self.user_song_list(user_id, 0, 1).await {
+                // 调用 user_song_list 方法时使用 u16 类型的参数
+                match self.user_song_list(user_id, play_list, 1).await {
                     Ok(user_songlists) => {
                         if !user_songlists.is_empty() {
                             self.user_favorite_songlist_name = Some(user_songlists[0].name.clone());

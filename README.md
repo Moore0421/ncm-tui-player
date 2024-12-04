@@ -12,11 +12,21 @@ tui 界面基于 `ratatui` crate 开发。
 
 ![main_screen](./doc/main_screen.png)
 
-## 依赖
+## 编译
 
-### [OpenSSL](https://github.com/openssl/openssl)
+### Windows
 
-### [Gstreamer](https://gstreamer.freedesktop.org/download)
+#### 一、安装依赖和编译工具
+
+1. `pkg-config` : [前往下载](https://gitcode.com/open-source-toolkit/04bca/blob/main/pkg-config-lite-0.28-1_bin-win32_2022%E6%9C%80%E6%96%B0%E7%89%88.zip)【解压到硬盘根目录】
+2. `cargo` : [官方文档](https://rustwiki.org/zh-CN/cargo/getting-started/installation.html)【均输入1等待安装完成】
+3. `Gstreamer` : [前往下载](https://gstreamer.freedesktop.org/download)【安装`MSVC 64-bit`，`runtime`和`development`均需要安装，安装时选择】
+4. `OpenSSL` : [前往下载](https://slproweb.com/products/Win32OpenSSL.html)【选择最新版但不带light版本】
+
+#### 二、配置环境变量
+1. 将`pkg-config`的`bin`路径添加到`Path`环境变量中，例如：`D:\pkg-config\bin`
+2. 配置`OPENSSL_DIR`环境变量，例如：`D:\Program Files\OpenSSL-Win64`
+... 有空在写
 
 ## Features 列表
 
